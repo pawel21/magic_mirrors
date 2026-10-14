@@ -1,0 +1,48 @@
+# Wszystkie progi w jednym miejscu. Kopia tego pliku jest zapisywana obok wyników.
+# UWAGA: progi QC i wymiary ROI są wartościami startowymi, nie skalibrowanymi.
+site:
+  lat: 28.7616
+  lon: -17.8908
+frame:
+  width: 830
+  height: 480
+  filename_regex: '(\d{8})_(\d{4})'      # YYYYMMDD_HHMM (UTC) gdziekolwiek w nazwie pliku
+  reference_frame: data/reference_frame.jpg
+geometry:
+  inset: 0.15                              # margines maski w ułamku boku lustra
+qc:
+  min_sun_alt_deg: 15.0
+  max_shift_px: 1.5
+  min_ridge_sharpness: 40.0                # wariancja Laplasjanu na grzbiecie/kopułach
+  max_dark_channel: 110.0                  # rośnie we mgle
+  min_grid_contrast: 2.0                   # < progu: teleskop poza parkingiem albo czasza niewidoczna
+  max_clear_cloud_frac: 0.02               # udział białawych pikseli nieba powyżej progu => "cloudy"
+  rois:                                    # [x0, y0, x1, y1]
+    ridge: [[150, 155, 210, 185], [690, 175, 725, 205]]
+    terrain: [620, 220, 800, 300]
+    sky: [[45, 50, 240, 140], [600, 20, 820, 150]]
+    static: [[20, 150, 300, 330], [600, 150, 820, 300]]
+features: [median, cov, iqr_norm, laplacian_std, edge_density, br_ratio]
+baseline:
+  max_sep_deg: 6.0                         # separacja kątowa Słońca kadr-referencja
+  lookback_days: 30
+  gap_days: 1                              # przerwa, żeby rozwijająca się awaria nie weszła do baseline'u
+  min_refs: 10
+  same_sky_class: true
+  zone_br_threshold: 1.15                  # mediana B/R lustra w referencjach powyżej => strefa "niebo"
+  ref_until: null                          # np. "2024-04-30": kadry późniejsze nigdy nie są referencjami (test na zamrożonym baseline)
+split:                                     # null = podział proporcjonalny z benchmark.split
+  fit: ["2024-04-01", "2024-04-25"]                                # np. ["2024-04-01", "2024-04-20"]  (kowariancja Mahalanobisa)
+  calibration: ["2024-04-26", "2024-05-02"]                        # np. ["2024-04-21", "2024-04-30"]  (próg)
+  test: ["2024-05-05", "2024-05-07"]                               # np. ["2024-05-01", "2024-05-31"]
+scoring:
+  sat_frac_veto: 0.05
+  persistence_k: 2
+  persistence_n: 3
+  persistence_max_gap_min: 40              # przerwa dłuższa między kadrami zeruje okno trwałości
+  threshold_percentile: 99.8               # na kadrach kalibracyjnych
+benchmark:
+  split: [0.5, 0.25, 0.25]                 # fit / kalibracja / test, chronologicznie
+  n_inject_per_frame: 3
+  lambdas: [0.25, 0.5, 0.75, 1.0]
+  seed: 0

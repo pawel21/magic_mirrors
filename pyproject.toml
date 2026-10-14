@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "magic_mirrors"
+version = "0.1.0"
+description = "Monitoring luster MAGIC-II na kadrach z webcamu"
+requires-python = ">=3.9"
+dependencies = ["numpy", "opencv-python-headless", "scipy", "pandas", "scikit-learn", "pyyaml", "pyarrow"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
