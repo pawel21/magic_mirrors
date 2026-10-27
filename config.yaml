@@ -7,7 +7,7 @@ frame:
   width: 830
   height: 480
   filename_regex: '(\d{8})_(\d{4})'      # YYYYMMDD_HHMM (UTC) gdziekolwiek w nazwie pliku
-  reference_frame: data/reference_frame.jpg
+  reference_frame: /home/pgliwny/Praca/cv_projects/input/ref_img/20240501_1500_la.jpg
 geometry:
   inset: 0.15                              # margines maski w ułamku boku lustra
 qc:
