@@ -1,5 +1,15 @@
-"""Segmentacja jednego kadru: python scripts/00_segment.py kadr.jpg [katalog_wyjściowy]
-Zapisuje mirrors.geojson, mirrors_labels.png (0 = tło, idx+1 = lustro) i mirrors_overlay.png."""
+"""Segment mirrors in a single frame.
+
+Writes the mirror outlines, a label image and a visual overlay.
+
+Usage:
+    python scripts/00_segment.py frame.jpg [output_dir]
+
+Outputs:
+    mirrors.geojson: Mirror outlines as GeoJSON.
+    mirrors_labels.png: Label image (0 = background, idx + 1 = mirror).
+    mirrors_overlay.png: Overlay of the segmentation on the frame.
+"""
 import sys, os, json
 import cv2, numpy as np
 from magic_mirrors import geometry
